@@ -64,6 +64,8 @@ proc highcov_main*(args:seq[string]=commandLineParams()) =
 
   try:
     var opts = p.parse(args)
+    if opts.help:
+      quit 0
     for h in highcov(opts.bam, parseInt(opts.n),
                      if opts.max_depth == "": -1 else: parseInt(opts.max_depth),
                      parseInt(opts.min_length),

@@ -118,10 +118,12 @@ proc meandepth_main*(args:seq[string]=commandLineParams()) =
   var p = newParser("meandepth"):
     option("-t", "--threads", help="cram/bam decompression threads (useful up to 4)", default="1")
     flag("-r", "--scale-by-read-length", help="divide mean-depth by read-length (https://github.com/DecodeGenetics/graphtyper/wiki/User-guide#subsampling-reads-in-abnormally-high-sequence-depth)")
-    arg("bam")
+    arg("bam", nargs=1)
 
   try:
     var opts = p.parse(args)
+    if opts.help:
+      quit 0
     var bam:Bam
     if not bam.open(opts.bam, threads=parseInt(opts.threads), index=true):
       quit &"[meandepth] couldn't open bam/cram: {opts.bam}"
@@ -139,7 +141,7 @@ proc meandepth_main*(args:seq[string]=commandLineParams()) =
   except UsageError as e:
     stderr.write_line(p.help)
     stderr.write_line(getCurrentExceptionMsg())
-    quit(1)
+    quit 1
 
 
 when isMainModule:

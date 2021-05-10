@@ -10,6 +10,8 @@ proc samplename_main*(args:seq[string]=commandLineParams()) =
 
   try:
     var opts = p.parse(args)
+    if opts.help:
+      quit 0
     var bam:Bam
     if not bam.open(opts.bam):
       quit &"[meandepth] couldn't open bam/cram: {opts.bam}"

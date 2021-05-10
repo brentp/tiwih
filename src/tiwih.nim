@@ -32,7 +32,9 @@ proc main() =
       echo &"unknown program '{args[0]}'"
     quit ""
 
-  dispatcher[args[0]].f(args[1..^1])
+  var cargs = args[1..^1]
+  if cargs.len == 0: cargs = @["--help"]
+  dispatcher[args[0]].f(cargs)
 
 
 when isMainModule:
