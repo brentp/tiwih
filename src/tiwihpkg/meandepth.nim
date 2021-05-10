@@ -95,10 +95,29 @@ proc estimate_mean_depth*(bam:Bam): int =
   mean_depths.sort()
   result = mean_depths[int(mean_depths.len / 2)]
 
+proc read_length(f:string, threads:int): int =
+  let skip_bases = 10_000_000
+  let samples = 10_000
+  var sizes = newSeqofCap[int](samples)
+  var bam:Bam
+  if not bam.open(f, threads=threads):
+    quit &"[meandepth] couldn't open bam/cram: {f}"
+  var n_bases = 0
+  for b in bam:
+    n_bases += b.b.core.l_qseq.int
+    if n_bases >= skip_bases:
+      sizes.add(b.b.core.l_qseq)
+    if sizes.len == samples: break
+
+  sizes.sort()
+  return sizes[int(sizes.len / 2)]
+
+
 proc meandepth_main*(args:seq[string]=commandLineParams()) =
 
   var p = newParser("meandepth"):
     option("-t", "--threads", help="cram/bam decompression threads (useful up to 4)", default="1")
+    flag("-r", "--scale-by-read-length", help="divide mean-depth by read-length (https://github.com/DecodeGenetics/graphtyper/wiki/User-guide#subsampling-reads-in-abnormally-high-sequence-depth)")
     arg("bam")
 
   try:
@@ -111,7 +130,12 @@ proc meandepth_main*(args:seq[string]=commandLineParams()) =
     discard bam.set_option(FormatOption.CRAM_OPT_REQUIRED_FIELDS, o)
     discard bam.set_option(FormatOption.CRAM_OPT_DECODE_MD, 0)
 
-    stdout.write_line $(bam.estimate_mean_depth())
+    let d = bam.estimate_mean_depth()
+    if opts.scale_by_read_length:
+      let rl = read_length(opts.bam, parseInt(opts.threads))
+      echo &"{d/rl:.3f}"
+    else:
+      echo $d
   except UsageError as e:
     stderr.write_line(p.help)
     stderr.write_line(getCurrentExceptionMsg())
