@@ -1,6 +1,7 @@
 import tables
 import strformat
 import ./tiwihpkg/highcov
+import ./tiwihpkg/meandepth
 import os
 
 proc main() =
@@ -11,6 +12,8 @@ proc main() =
 
   var dispatcher = {
     "highcov": pair(f:highcov_main, description:"report high-coverage regions in a bam/cram"),
+    "meandepth": pair(f:meandepth_main, description:"quickly estimate mean coverage in a bam/cram"),
+    "samplename": pair(f:readgroup_main, description:"find sample-name from read-group in a bam/cram"),
     }.toOrderedTable
 
   var args = commandLineParams()
