@@ -1,11 +1,14 @@
 import tables
 import strformat
+import ./tiwihpkg/version
+
 import ./tiwihpkg/highcov
 import ./tiwihpkg/meandepth
 import ./tiwihpkg/samplename
 import os
 
 proc main() =
+  stderr.write_line &"[tiwih] version {tiwihVersion}"
 
   type pair = object
     f: proc(args:seq[string])
@@ -18,6 +21,8 @@ proc main() =
     }.toOrderedTable
 
   var args = commandLineParams()
+  when not defined(danger):
+    stderr.write_line "[tiwih] compiled without optimizations, will be slow"
 
   if len(args) == 0 or not (args[0] in dispatcher):
     stderr.write_line "\nCommands: "
