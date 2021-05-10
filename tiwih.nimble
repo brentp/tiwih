@@ -1,5 +1,5 @@
 
-import os
+import ospaths
 template thisModuleFile: string = instantiationInfo(fullPaths = true).filename
 
 when fileExists(thisModuleFile.parentDir / "src/tiwih.nim"):
@@ -23,7 +23,7 @@ requires "argparse == 0.10.1"
 srcDir = "src"
 installExt = @["nim"]
 
-bin = @["bptools"]
+bin = @["tiwih"]
 
 skipDirs = @["tests"]
 
