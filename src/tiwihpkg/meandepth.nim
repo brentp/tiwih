@@ -73,7 +73,7 @@ proc mean(depths: var seq[int32]): int =
 
 
 proc estimate_mean_depth*(bam:Bam): int =
-  var size = 1_000_000
+  var size = 600_000
   randomize()
 
   var mean_depths: seq[int]
@@ -95,12 +95,12 @@ proc estimate_mean_depth*(bam:Bam): int =
   mean_depths.sort()
   result = mean_depths[int(mean_depths.len / 2)]
 
-proc read_length(f:string, threads:int): int =
+proc read_length(f:string): int =
   let skip_bases = 10_000_000
   let samples = 10_000
   var sizes = newSeqofCap[int](samples)
   var bam:Bam
-  if not bam.open(f, threads=threads):
+  if not bam.open(f, threads=1):
     quit &"[meandepth] couldn't open bam/cram: {f}"
   var n_bases = 0
   for b in bam:
@@ -116,7 +116,6 @@ proc read_length(f:string, threads:int): int =
 proc meandepth_main*(args:seq[string]=commandLineParams()) =
 
   var p = newParser("meandepth"):
-    option("-t", "--threads", help="cram/bam decompression threads (useful up to 4)", default="1")
     flag("-r", "--scale-by-read-length", help="divide mean-depth by read-length (https://github.com/DecodeGenetics/graphtyper/wiki/User-guide#subsampling-reads-in-abnormally-high-sequence-depth)")
     arg("bam", nargs=1)
 
@@ -125,7 +124,7 @@ proc meandepth_main*(args:seq[string]=commandLineParams()) =
     if opts.help:
       quit 0
     var bam:Bam
-    if not bam.open(opts.bam, threads=parseInt(opts.threads), index=true):
+    if not bam.open(opts.bam, threads=1, index=true):
       quit &"[meandepth] couldn't open bam/cram: {opts.bam}"
 
     var o = SamField.SAM_FLAG.int or SamField.SAM_POS.int or SamField.SAM_MAPQ.int or SamField.SAM_CIGAR.int
@@ -134,7 +133,7 @@ proc meandepth_main*(args:seq[string]=commandLineParams()) =
 
     let d = bam.estimate_mean_depth()
     if opts.scale_by_read_length:
-      let rl = read_length(opts.bam, parseInt(opts.threads))
+      let rl = read_length(opts.bam)
       echo &"{d/rl:.3f}"
     else:
       echo $d
