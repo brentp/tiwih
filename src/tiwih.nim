@@ -6,6 +6,7 @@ import ./tiwihpkg/highcov
 import ./tiwihpkg/meandepth
 import ./tiwihpkg/samplename
 import ./tiwihpkg/setrefallele
+import ./tiwihpkg/fairegions
 import os
 
 proc main() =
@@ -16,6 +17,7 @@ proc main() =
     description: string
 
   var dispatcher = {
+    "fairegions": pair(f:fairegions_main, description:"generate equal length regions from an fai (for parallelization)"),
     "highcov": pair(f:highcov_main, description:"report high-coverage regions in a bam/cram"),
     "meandepth": pair(f:meandepth_main, description:"quickly estimate mean coverage in a bam/cram"),
     "samplename": pair(f:samplename_main, description:"find sample-name from read-group in a bam/cram"),

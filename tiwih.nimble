@@ -19,7 +19,7 @@ license       = "MIT"
 
 # Dependencies
 requires "hts >= 0.3.4", "lapper >= 0.1.6", "https://github.com/brentp/pedfile >= 0.0.3"
-requires "argparse == 0.10.1"
+requires "argparse == 0.10.1", "regex"
 srcDir = "src"
 installExt = @["nim"]
 
