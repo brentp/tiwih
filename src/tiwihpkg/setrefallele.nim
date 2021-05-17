@@ -13,20 +13,6 @@ proc setref(ivcf:var VCF, ovcf:var VCF, fai:Fai, unset_id:bool) =
     if unset_id:
       v.ID = "."
 
-    #[
-    if v.REF.len > 1 or v.ALT[0].len > 1:
-      var svt:string
-      if v.info.get("SVTYPE", svt) != Status.OK:
-        var entry:string
-        if v.ALT[0].startsWith("<INS"):
-          entry = "INS"
-        elif v.ALT[0].startsWith("<DEL"):
-          entry = "DEL"
-        else:
-          echo v.ALT
-        echo v.info.set("SVTYPE", entry)
-        ]#
-
     doAssert ovcf.write_variant(v)
   ovcf.close()
   ivcf.close()
