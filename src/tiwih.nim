@@ -2,6 +2,7 @@ import tables
 import strformat
 import ./tiwihpkg/version
 
+import ./tiwihpkg/combine_slivar_counts
 import ./tiwihpkg/highcov
 import ./tiwihpkg/meandepth
 import ./tiwihpkg/samplename
@@ -18,6 +19,7 @@ proc main() =
     description: string
 
   var dispatcher = {
+    "combine_slivar_counts": pair(f:combine_slivar_counts_main, description:"combine counts from slivar for original call and for compound-hets"),
     "fairegions": pair(f:fairegions_main, description:"generate equal length regions from an fai (for parallelization)"),
     "highcov": pair(f:highcov_main, description:"report high-coverage regions in a bam/cram"),
     "meandepth": pair(f:meandepth_main, description:"quickly estimate mean coverage in a bam/cram"),
