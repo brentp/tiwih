@@ -45,7 +45,7 @@ proc sum_slivar_counts(counts_files:seq[string], drop_zero_samples: bool) =
           old[i] += n
         counts[toks[0]] = old
 
-  stdout.write_line '#' & header_line
+  stdout.write_line header_line
   for sample in sample_order:
     let sample_counts = counts[sample]
     if drop_zero_samples and all_zero(sample_counts):
