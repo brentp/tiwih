@@ -1,3 +1,8 @@
+v0.0.6
+======
++ [combine_slivar_counts]: handles cases where we got family-based counts (with zeros) in one file that are missing in the 
+  compound-het file. also allows dropping files with zero samples.
+
 v0.0.5
 ======
 + new tool: `combine_slivar_counts` for combining the variant counts output by slivar from compound het and standard run.

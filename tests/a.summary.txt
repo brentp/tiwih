@@ -1,0 +1,4 @@
+sample	comphet_side	denovo	recessive	x_denovo	x_recessive	dominant
+150423	0	0	0	0	0	0
+150424	2637	14	18	0	0	18
+150426	0	0	0	0	0	0

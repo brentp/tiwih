@@ -33,11 +33,13 @@ proc main() =
     stderr.write_line "[tiwih] compiled without optimizations, will be slow"
 
   if len(args) == 0 or not (args[0] in dispatcher):
-    stderr.write_line "\nCommands: "
+    stdout.write_line "\nCommands: "
     for k, v in dispatcher:
       echo &"  {k:<13}:   {v.description}"
-    if len(args) > 0 and (args[0] notin dispatcher) and args[0] notin @["-h", "-help"]:
+    if len(args) > 0 and (args[0] notin dispatcher) and args[0] notin @["-h", "-help", "--help"]:
       echo &"unknown program '{args[0]}'"
+    else:
+      quit 0
     quit ""
 
   var cargs = args[1..^1]

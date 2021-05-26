@@ -1,0 +1,2 @@
+sample	compound-het
+150424	4
