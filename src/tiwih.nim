@@ -9,6 +9,7 @@ import ./tiwihpkg/samplename
 import ./tiwihpkg/setrefallele
 import ./tiwihpkg/fairegions
 import ./tiwihpkg/setsvalt
+import ./tiwihpkg/sum_slivar_counts
 import os
 
 proc main() =
@@ -26,6 +27,7 @@ proc main() =
     "samplename": pair(f:samplename_main, description:"find sample-name from read-group in a bam/cram"),
     "setsvalt": pair(f:setsvalt_main, description:"set the ALT allele in a manta VCF to left + N + right for paragraph genotyper"),
     "setref": pair(f:setref_main, description:"set reference allele to actual allele from 'N'"),
+    "sum_slivar_counts": pair(f:sum_slivar_counts_main, description:"from same samples split across multiple files/regions"),
     }.toOrderedTable
 
   var args = commandLineParams()

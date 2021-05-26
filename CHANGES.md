@@ -1,3 +1,7 @@
+v0.0.7
+======
++ new tool: `sum_slivar_counts`: adds the slivar variant counts in case of parallelization across regions.
+
 v0.0.6
 ======
 + [combine_slivar_counts]: handles cases where we got family-based counts (with zeros) in one file that are missing in the 
