@@ -7,4 +7,5 @@
 + **samplename**: (bam/cram) print sample name from readgroup tag
 + **setsvalt**: (vcf/bcf) set the ALT allele in a manta VCF to left + N + right for paragraph genotyper
 + **setref**: (vcf/bcf) change ref allele from N to the actual allele.
++ **slivar_split_fam**: (vcf/bcf) split joint slivar files by family and inheritance mode
 + **sum_slivar_counts**: sum counts from [slivar](https://github.com/brentp/slivar) from same samples split across multiple files/regions

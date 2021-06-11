@@ -15,11 +15,11 @@ proc combine_slivar_counts(counts:string, counts_ch:string, drop_fields: var seq
 
   var cfh: File
   if not cfh.open(counts):
-    quit "couldn't open counts file"
+    quit &"couldn't open counts file: {counts}"
 
   var hfh: File
   if not hfh.open(counts_ch):
-    quit "couldn't open counts-ch file"
+    quit &"couldn't open counts-ch file: {counts_ch}"
 
   var header = cfh.readLine().strip(chars={'#', '\n', '\r', ' '}).split("\t")
   var chheader = hfh.readLine().strip(chars={'#', '\n', '\r', ' '}).split("\t")
