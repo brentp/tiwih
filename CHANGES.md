@@ -1,3 +1,7 @@
+v0.0.8
+======
++ new tool: `slivar_split_fam`: split joint slivar files by family and inheritance mode
+
 v0.0.7
 ======
 + new tool: `sum_slivar_counts`: adds the slivar variant counts in case of parallelization across regions.
