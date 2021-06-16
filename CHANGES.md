@@ -1,3 +1,7 @@
+v0.1.0
+======
++ `sum_slivar_counts` bugfix
+
 v0.0.9
 ======
 + new tool: `slivar_jigv_links`: add jigv links to the tsv

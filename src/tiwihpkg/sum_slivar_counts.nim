@@ -20,7 +20,7 @@ proc sum_slivar_counts(counts_files:seq[string], drop_zero_samples: bool) =
     if i == 0:
       header_line = fhs[i].readLine.strip(chars={'#'})
     else:
-      doAssert fhs[i].readLine == header_line, "tiwih: require mathcing headers for sum-slivar-counts"
+      doAssert fhs[i].readLine.strip(chars={'#'}) == header_line, "tiwih: require matching headers for sum-slivar-counts, got\n{header_line}\nand\n{fhs[i].readLine.strip(chars={'#'})}"
   defer:
     for f in fhs: f.close()
 
