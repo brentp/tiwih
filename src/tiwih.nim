@@ -9,8 +9,9 @@ import ./tiwihpkg/samplename
 import ./tiwihpkg/setrefallele
 import ./tiwihpkg/fairegions
 import ./tiwihpkg/setsvalt
-import ./tiwihpkg/sum_slivar_counts
+import ./tiwihpkg/slivar_jigv_links
 import ./tiwihpkg/slivar_split_fam
+import ./tiwihpkg/sum_slivar_counts
 import os
 
 proc main() =
@@ -28,6 +29,7 @@ proc main() =
     "samplename": pair(f:samplename_main, description:"find sample-name from read-group in a bam/cram"),
     "setsvalt": pair(f:setsvalt_main, description:"set the ALT allele in a manta VCF to left + N + right for paragraph genotyper"),
     "setref": pair(f:setref_main, description:"set reference allele to actual allele from 'N'"),
+    "slivar_jigv_links": pair(f:slivar_jigv_links_main, description:"add jigv links to a slivar tsv"),
     "slivar_split_fam": pair(f:slivar_split_fam_main, description:"split joint slivar files by family and inheritance mode"),
     "sum_slivar_counts": pair(f:sum_slivar_counts_main, description:"from same samples split across multiple files/regions"),
     }.toOrderedTable

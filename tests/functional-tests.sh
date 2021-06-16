@@ -37,3 +37,7 @@ assert_in_stdout "#sample	comphet_side	denovo	recessive	x_denovo	x_recessive	dom
 150424	5274	28	36	0	0	36"
 assert_exit_code 0
 
+
+run check_slivar_jigv_links $exe slivar_jigv_links -d file://jigv_plots/ tests/slivar.candidates.tsv
+assert_exit_code 0
+assert_equal $(cat tests/slivar.candidates.tsv | wc -l) $(cat $STDOUT_FILE | wc -l)

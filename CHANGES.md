@@ -1,3 +1,7 @@
+v0.0.9
+======
++ new tool: `slivar_jigv_links`: add jigv links to the tsv
+
 v0.0.8
 ======
 + new tool: `slivar_split_fam`: split joint slivar files by family and inheritance mode
