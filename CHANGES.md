@@ -1,3 +1,8 @@
+v0.1.1
+======
++ new tool: slivar_jigv_tsv: writes an html page with a table of all variants
+  where row-click loads and igv.js plots the appropirate data.
+
 v0.1.0
 ======
 + `sum_slivar_counts` bugfix
