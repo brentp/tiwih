@@ -1,3 +1,8 @@
+v0.1.2
+======
++ meandepth: fix so that we don't need read sequence to count read-length.
+  (just use cigar).
+
 v0.1.1
 ======
 + new tool: slivar_jigv_tsv: writes an html page with a table of all variants

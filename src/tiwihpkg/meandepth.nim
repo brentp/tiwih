@@ -102,11 +102,17 @@ proc read_length(f:string): int =
   var bam:Bam
   if not bam.open(f, threads=1):
     quit &"[meandepth] couldn't open bam/cram: {f}"
+  var o = SamField.SAM_FLAG.int or SamField.SAM_POS.int or SamField.SAM_MAPQ.int or SamField.SAM_CIGAR.int
+  discard bam.set_option(FormatOption.CRAM_OPT_REQUIRED_FIELDS, o)
+  discard bam.set_option(FormatOption.CRAM_OPT_DECODE_MD, 0)
   var n_bases = 0
   for b in bam:
-    n_bases += b.b.core.l_qseq.int
+    var rl = 0
+    for op in b.cigar:
+      rl += op.len * int(op.consumes.query)
+    n_bases += rl
     if n_bases >= skip_bases:
-      sizes.add(b.b.core.l_qseq)
+      sizes.add(rl)
     if sizes.len == samples: break
 
   sizes.sort()
