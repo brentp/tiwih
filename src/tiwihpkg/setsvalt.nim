@@ -3,7 +3,7 @@ import strformat
 import strutils
 import argparse
 
-proc setsvalt(ivcf:var VCF, ovcf:var VCF, drop_bnds:bool) =
+proc setsvalt(ivcf:var VCF, ovcf:var VCF, drop_bnds:bool, inv_2_ins:bool) =
   ovcf.copy_header(ivcf.header)
   doAssert ovcf.write_header
 
@@ -13,6 +13,16 @@ proc setsvalt(ivcf:var VCF, ovcf:var VCF, drop_bnds:bool) =
   for v in ivcf:
     if drop_bnds and v.info.get("SVTYPE", svt) == Status.OK and svt == "BND": continue
     if v.ALT[0] != "<INS>":
+
+      # sometimes manta writes 0-length INVs and paragraph doesn't like that.
+      if v.ALT[0] == "<INV>" and v.stop - v.start <= 1:
+        v.ALT = "<INS>"
+        var ins = "INS"
+        discard v.info.set("SVTYPE", ins)
+        var svseq: string
+        if v.info.get("SVINSSEQ", svseq) == Status.OK:
+          v.ALT = svseq
+
       doAssert ovcf.write_variant(v)
       continue
 
@@ -33,6 +43,7 @@ proc setsvalt_main*(args:seq[string]=commandLineParams()) =
   var p = newParser("setsvalt"):
     option("-o", "--output-vcf", help="path to output vcf/bcf")
     flag("--drop-bnds", help="drop any BND variants from the output")
+    flag("--inv-2-ins", help="convert any 0-length inversions to insertions")
     arg("vcf", nargs=1, help="vcf for which to set N to the proper reference allele")
 
   try:
@@ -47,7 +58,7 @@ proc setsvalt_main*(args:seq[string]=commandLineParams()) =
     if not ovcf.open(opts.output_vcf, threads=1, mode="w"):
       quit &"[setref] couldn't open vcf/bcf: {opts.output_vcf}"
 
-    setsvalt(ivcf, ovcf, opts.drop_bnds)
+    setsvalt(ivcf, ovcf, opts.drop_bnds, opts.inv_2_ins)
   except UsageError as e:
     stderr.write_line(p.help)
     stderr.write_line(getCurrentExceptionMsg())

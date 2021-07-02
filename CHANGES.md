@@ -1,3 +1,7 @@
+v0.1.3
+======
++ svsetalt: update for jasmine peculiarities
+
 v0.1.2
 ======
 + meandepth: fix so that we don't need read sequence to count read-length.
