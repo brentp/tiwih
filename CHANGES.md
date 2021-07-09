@@ -1,3 +1,7 @@
+v0.1.4
+======
++ svsetalt: try to set start to > 151 and skip if that makes start > stop
+
 v0.1.3
 ======
 + svsetalt: update for jasmine peculiarities

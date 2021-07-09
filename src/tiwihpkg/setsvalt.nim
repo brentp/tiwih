@@ -12,6 +12,12 @@ proc setsvalt(ivcf:var VCF, ovcf:var VCF, drop_bnds:bool, inv_2_ins:bool) =
   var right:string
   for v in ivcf:
     if drop_bnds and v.info.get("SVTYPE", svt) == Status.OK and svt == "BND": continue
+    if v.start < 151:
+      v.c.pos = 151
+      if v.start > v.stop: 
+        stderr.write_line &"[tiwih setsvalt] skipping variant with small start {v.tostring}"
+        continue
+
     if v.ALT[0] != "<INS>":
 
       # sometimes manta writes 0-length INVs and paragraph doesn't like that.
