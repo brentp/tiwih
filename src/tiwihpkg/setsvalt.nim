@@ -35,9 +35,9 @@ proc setsvalt(ivcf:var VCF, ovcf:var VCF, drop_bnds:bool, inv_2_ins:bool, fai:Fa
       continue
 
     if v.info.get("LEFT_SVINSSEQ", left) == Status.OK and v.info.get("RIGHT_SVINSSEQ", right) == Status.OK:
-       v.ALT = v.REF & left & repeat('N', 200) & right
+       v.ALT = (v.REF & left & repeat('N', 200) & right).toUpperAscii
     elif v.info.get("SVINSSEQ", left) == Status.OK:
-      v.ALT = v.REF & left
+      v.ALT = (v.REF & left).toUpperAscii
     else:
       stderr.write_line v.tostring
       stderr.write_line &"[setalt] didn't get left and right seqs for missing INS"
