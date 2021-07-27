@@ -2,8 +2,9 @@ import hts
 import strformat
 import strutils
 import argparse
+import ./setrefallele
 
-proc setsvalt(ivcf:var VCF, ovcf:var VCF, drop_bnds:bool, inv_2_ins:bool) =
+proc setsvalt(ivcf:var VCF, ovcf:var VCF, drop_bnds:bool, inv_2_ins:bool, fai:Fai) =
   ovcf.copy_header(ivcf.header)
   doAssert ovcf.write_header
 
@@ -12,6 +13,7 @@ proc setsvalt(ivcf:var VCF, ovcf:var VCF, drop_bnds:bool, inv_2_ins:bool) =
   var right:string
   for v in ivcf:
     if drop_bnds and v.info.get("SVTYPE", svt) == Status.OK and svt == "BND": continue
+    setref(v, fai)
     if v.start < 151:
       v.c.pos = 151
       if v.start > v.stop: 
@@ -50,7 +52,8 @@ proc setsvalt_main*(args:seq[string]=commandLineParams()) =
     option("-o", "--output-vcf", help="path to output vcf/bcf")
     flag("--drop-bnds", help="drop any BND variants from the output")
     flag("--inv-2-ins", help="convert any 0-length inversions to insertions")
-    arg("vcf", nargs=1, help="vcf for which to set N to the proper reference allele")
+    arg("fasta", nargs=1, help="reference fasta")
+    arg("vcf", nargs=1, help="vcf for which to set N to the proper reference and alt alleles")
 
   try:
     var opts = p.parse(args)
@@ -58,13 +61,17 @@ proc setsvalt_main*(args:seq[string]=commandLineParams()) =
       quit 0
     var ivcf:VCF
     if not ivcf.open(opts.vcf, threads=1):
-      quit &"[setref] couldn't open vcf/bcf: {opts.vcf}"
+      quit &"[setsvalt] couldn't open vcf/bcf: {opts.vcf}"
+
+    var fai:Fai
+    if not fai.open(opts.fasta):
+      quit &"[setsvalt] couldn't open fasta: {opts.fasta}"
 
     var ovcf:VCF
     if not ovcf.open(opts.output_vcf, threads=1, mode="w"):
       quit &"[setref] couldn't open vcf/bcf: {opts.output_vcf}"
 
-    setsvalt(ivcf, ovcf, opts.drop_bnds, opts.inv_2_ins)
+    setsvalt(ivcf, ovcf, opts.drop_bnds, opts.inv_2_ins, fai)
   except UsageError as e:
     stderr.write_line(p.help)
     stderr.write_line(getCurrentExceptionMsg())

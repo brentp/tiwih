@@ -1,15 +1,19 @@
 import hts
 import strformat
+import strutils
 import argparse
+
+proc setref*(v:Variant, fai:Fai) =
+    if v.REF in [".", "", "N"]:
+      let allele = fai.get($v.CHROM, v.start.int, v.start.int)
+      v.REF= $(allele[0].toUpperAscii)
 
 proc setref(ivcf:var VCF, ovcf:var VCF, fai:Fai, unset_id:bool) =
   ovcf.copy_header(ivcf.header)
   doAssert ovcf.write_header
 
   for v in ivcf:
-    if v.REF in [".", "", "N"]:
-      let allele = fai.get($v.CHROM, v.start.int, v.start.int)
-      v.REF=allele
+    v.setref(fai)
     if unset_id:
       v.ID = "."
 
