@@ -1,3 +1,7 @@
+v0.1.6
+======
++ new tool: `pedbam`: adds a path column to a pedigree file given a ped file and a list of bams
+
 v0.1.4
 ======
 + svsetalt: try to set start to > 151 and skip if that makes start > stop

@@ -8,6 +8,7 @@ import ./tiwihpkg/meandepth
 import ./tiwihpkg/samplename
 import ./tiwihpkg/setrefallele
 import ./tiwihpkg/fairegions
+import ./tiwihpkg/pedbam
 import ./tiwihpkg/setsvalt
 import ./tiwihpkg/slivar_jigv_links
 import ./tiwihpkg/slivar_jigv_tsv
@@ -27,6 +28,7 @@ proc main() =
     "fairegions": pair(f:fairegions_main, description:"generate equal length regions from an fai (for parallelization)"),
     "highcov": pair(f:highcov_main, description:"report high-coverage regions in a bam/cram"),
     "meandepth": pair(f:meandepth_main, description:"quickly estimate mean coverage in a bam/cram"),
+    "pedbam": pair(f:pedbam_main, description:"add a alignment path to a ped/fam file given a list of bams/crams"),
     "samplename": pair(f:samplename_main, description:"find sample-name from read-group in a bam/cram"),
     "setsvalt": pair(f:setsvalt_main, description:"set the ALT allele in a manta VCF to left + N + right for paragraph genotyper"),
     "setref": pair(f:setref_main, description:"set reference allele to actual allele from 'N'"),

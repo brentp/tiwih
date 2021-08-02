@@ -1,1 +1,1 @@
-const tiwihVersion* = "0.1.5"
+const tiwihVersion* = "0.1.6"
