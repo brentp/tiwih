@@ -14,6 +14,7 @@ import ./tiwihpkg/slivar_jigv_links
 import ./tiwihpkg/slivar_jigv_tsv
 import ./tiwihpkg/slivar_split_fam
 import ./tiwihpkg/sum_slivar_counts
+import ./tiwihpkg/vcf2bedpe
 import os
 
 proc main() =
@@ -36,6 +37,7 @@ proc main() =
     "slivar_jigv_tsv": pair(f:slivar_jigv_tsv_main, description:"generate an html file with links to existing jigv plots from a slivar tsv file"),
     "slivar_split_fam": pair(f:slivar_split_fam_main, description:"split joint slivar files by family and inheritance mode"),
     "sum_slivar_counts": pair(f:sum_slivar_counts_main, description:"from same samples split across multiple files/regions"),
+    "vcf2bedpe": pair(f: vcf2bedpe_main, description: "convert and SV VCF to simple bedpe"),
     }.toOrderedTable
 
   var args = commandLineParams()

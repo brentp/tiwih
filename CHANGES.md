@@ -1,3 +1,7 @@
+v0.1.7
+=====
++ new tool: `vcf2bedpe`: naive conversion of vcf to bedpe
+
 v0.1.6
 ======
 + new tool: `pedbam`: adds a path column to a pedigree file given a ped file and a list of bams
