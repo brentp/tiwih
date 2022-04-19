@@ -9,3 +9,5 @@
 + **setref**: (vcf/bcf) change ref allele from N to the actual allele.
 + **slivar_split_fam**: (vcf/bcf) split joint slivar files by family and inheritance mode
 + **sum_slivar_counts**: sum counts from [slivar](https://github.com/brentp/slivar) from same samples split across multiple files/regions
++ **vcf2bedpe** : convert and SV VCF to simple bedpe
+
