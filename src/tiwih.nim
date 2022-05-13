@@ -26,6 +26,7 @@ proc main() =
 
   var dispatcher = {
     "combine_slivar_counts": pair(f:combine_slivar_counts_main, description:"combine counts from slivar for original call and for compound-hets"),
+    #"extract_bam_region_pairs": pair(f: 
     "fairegions": pair(f:fairegions_main, description:"generate equal length regions from an fai (for parallelization)"),
     "highcov": pair(f:highcov_main, description:"report high-coverage regions in a bam/cram"),
     "meandepth": pair(f:meandepth_main, description:"quickly estimate mean coverage in a bam/cram"),

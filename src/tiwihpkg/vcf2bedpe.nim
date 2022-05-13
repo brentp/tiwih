@@ -6,9 +6,9 @@ import argparse
 proc vcf2bedpe(ivcf:var VCF, ofh:File, drop_bnds:bool=true) =
   var svt:string
   for v in ivcf:
-    if drop_bnds and v.info.get("SVTYPE", svt) == Status.OK and svt == "BND": continue
-
-    ofh.write(&"{v.CHROM}\t{v.start}\t{v.start+1}\t{v.CHROM}\t{v.stop}\t{v.stop+1}\n")
+    svt = ""
+    if v.info.get("SVTYPE", svt) == Status.OK and svt == "BND" and drop_bnds: continue
+    ofh.write(&"{v.CHROM}\t{v.start}\t{v.start+1}\t{v.CHROM}\t{v.stop}\t{v.stop+1}\t{svt}\n")
 
   ivcf.close()
   ofh.close()

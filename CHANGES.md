@@ -1,3 +1,7 @@
+v0.1.8
+======
++ vcf2bedpe: output svtype as 7th column
+
 v0.1.7
 =====
 + new tool: `vcf2bedpe`: naive conversion of vcf to bedpe
