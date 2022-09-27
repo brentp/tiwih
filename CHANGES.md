@@ -1,3 +1,16 @@
+v0.1.9
+======
++ meandepth: add --chromosome(s) argument. This lets us check particular chromosomes and allows a quick sex-check.
+  e.g.  `tiwih meandepth --chromosome chr1,chr2,chrX,chrY $bam` will output something like:
+```
+chr1    55
+chr2    57
+chrX    28
+chrY    28
+``` 
+
+which indicates that this sample has one X and one Y chromosome.
+
 v0.1.8
 ======
 + vcf2bedpe: output svtype as 7th column

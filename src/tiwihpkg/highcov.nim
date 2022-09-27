@@ -41,7 +41,7 @@ iterator highcov(fbam:string, nsd:int, max_depth:int, min_length:int, threads:in
     var l = target.length.int
     for start in countup(0, l, size):
       zeroMem(depths[0].addr.pointer, depths.len * sizeof(depths[0]))
-      bam.region_depth(target, start, depths)
+      discard bam.region_depth(target, start, depths)
 
       var i = 0
       while i < depths.high:
