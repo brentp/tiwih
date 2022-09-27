@@ -72,15 +72,23 @@ proc mean(depths: var seq[int32]): int =
     return int(0.5 + S)
 
 
-proc estimate_mean_depth*(bam:Bam): int =
+proc estimate_mean_depth*(bam:Bam, chrom:string=""): int =
+  ## estimate the mean depth of a chromosome (or region) by sampling.
   var size = 600_000
   randomize()
 
   var mean_depths: seq[int]
   var depths = newSeq[int32](size)
   for target in bam.hdr.targets:
-    if target.name.endsWith("decoy") or target.name == "hs37d5" or target.name.endsWith("random") or target.name.endsWith("X") or target.name.endsWith("Y"): continue
-    if target.length.int < 5 * size: continue
+    if chrom != "":
+      if chrom != target.name: continue
+    else:
+      if target.name.endsWith("decoy") or target.name == "hs37d5" or target.name.endsWith("random") or target.name.endsWith("X") or target.name.endsWith("Y"): continue
+      if target.length.int < 5 * size: continue
+
+    if chrom != "" and target.name != chrom:
+      raise newException(KeyError, &"chromosome {chrom} not found in bam/cram header")
+
     var l = target.length.int
 
     # sample more from larger chroms. ~6 times for chr1
@@ -123,6 +131,7 @@ proc meandepth_main*(args:seq[string]=commandLineParams()) =
 
   var p = newParser("meandepth"):
     flag("-r", "--scale-by-read-length", help="divide mean-depth by read-length (https://github.com/DecodeGenetics/graphtyper/wiki/User-guide#subsampling-reads-in-abnormally-high-sequence-depth)")
+    option("--chromosome", help="optional chromosome to restrict depth calculation")
     arg("bam", nargs=1)
 
   try:
@@ -137,7 +146,7 @@ proc meandepth_main*(args:seq[string]=commandLineParams()) =
     discard bam.set_option(FormatOption.CRAM_OPT_REQUIRED_FIELDS, o)
     discard bam.set_option(FormatOption.CRAM_OPT_DECODE_MD, 0)
 
-    let d = bam.estimate_mean_depth()
+    let d = bam.estimate_mean_depth(opts.chromosome)
     if opts.scale_by_read_length:
       let rl = read_length(opts.bam)
       echo &"{d/rl:.3f}"
