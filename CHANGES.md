@@ -1,3 +1,7 @@
+v0.2.0
+======
++ meandepth: better heuristics for small chromosomes.
+
 v0.1.9
 ======
 + meandepth: add --chromosome(s) argument. This lets us check particular chromosomes and allows a quick sex-check.

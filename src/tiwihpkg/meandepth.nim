@@ -100,10 +100,10 @@ proc estimate_mean_depth*(bam:Bam, chrom:string=""): int =
     var l = target.length.int
 
     # sample more from larger chroms. ~40 times for chr1
-    var times = max(1, int(l / 6_000_000))
+    var times = max(10, int(l / 6_000_000))
     if chrom != "": times *= 10
     var tries = 0
-    while mean_depths.len < times and tries < times * 2:
+    while mean_depths.len < times and tries < times * 4:
       tries.inc
       var start = rand(0..l-2 * size)
       var depths = newSeq[int32](size)
@@ -112,7 +112,10 @@ proc estimate_mean_depth*(bam:Bam, chrom:string=""): int =
         if d >= 0: mean_depths.add(d)
 
   mean_depths.sort()
-  result = mean_depths[int(mean_depths.len / 2)]
+  if mean_depths.len() > 2:
+    result = mean_depths[int(mean_depths.len / 2)]
+  else:
+    result = int(0.5 + mean_depths.sum() / mean_depths.len)
 
 proc read_length(f:string): int =
   let skip_bases = 10_000_000
